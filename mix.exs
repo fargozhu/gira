@@ -15,12 +15,9 @@ defmodule Gira.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Gira.Application, [env: Mix.env]}      
+      #mod: {Gira.Application, [env: Mix.env]}
     ]
   end
-
-  #defp applications(:test), do: applications(:default) ++ [:cowboy, :plug]
-  defp applications(_),     do: [:httpoison]
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do

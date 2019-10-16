@@ -1,21 +1,27 @@
 defmodule GiraTest do
   use ExUnit.Case  
 
-  @auth_token "<authorization-token>"
+  @base_url ""  # add Jira base url like https://jira.com/rest/api/2
+  @auth_token ""  # add Jira authorization token here
 
   # Application.put_env(:tesla, Tesla.MockTest.Client, adapter: Tesla.Mock)    
 
   test "it returns issue basic info as { :ok, { status: 200, payload: [%{}] }} when searching for an existent issue" do
-    { :ok, response } = Gira.get_issue_basic_info("labels%3DGithub-1210", ["Authorization":  @auth_token, "Content-type": "application/json"])        
+    { :ok, response } = Gira.get(
+      @base_url <> "/search?jql=labels%3DGithub-1210&fields=total", 
+      [{ "Authorization",  @auth_token }, { "Content-type", "application/json" }])        
+
     assert response.status == 200
-    assert response.payload != 
-    assert response.payload[0].id != nil
+    assert response.payload != nil
+    assert Enum.map(response.payload, & &1["id"]) > 0
   end
   
-  @tag :skip
   test "it returns a { :ok, { status: 404, payload: nil }} when searching for an unexistent issue" do
-    { :ok, response } = Gira.get_issue_basic_info("labels%3DGithub-NotExist")        
-    assert response.staus == 404
+    { :ok, response } = Gira.get(        
+      @base_url <> "/search?jql=labels%3DGithub-NotExist&fields=total", 
+      [{ "Authorization",  @auth_token }, { "Content-type", "application/json" }])        
+    
+    assert response.status == 404
     assert response.payload == nil
   end
 
