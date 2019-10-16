@@ -8,6 +8,7 @@ defmodule Gira.MixProject do
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      description: description(),
       package: package,
     ]
   end
@@ -26,12 +27,17 @@ defmodule Gira.MixProject do
       {:httpoison, "~> 1.6"},
       {:poison, "~> 4.0"},
       {:jason, "~> 1.1"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
     ]
   end
 
-  defp package do
+  defp description() do
+    "Gira is a Jira client library for the fews."
+  end
+
+  defp package() do
     [
-      files: ["lib", "mix.exs", "README", "LICENSE*"],
+      files: ["lib", "mix.exs", "README.md", "LICENSE*", ".formatter.exs"],
       maintainers: ["Jaime Gomes"],
       licenses: ["Apache 2.0"],
       links: %{"GitHub" => "https://github.com/fargozhu/gira"}
