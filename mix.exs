@@ -7,7 +7,8 @@ defmodule Gira.MixProject do
       version: "0.1.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      package: package,
     ]
   end
 
@@ -15,12 +16,9 @@ defmodule Gira.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Gira.Application, [env: Mix.env]}      
+      #mod: {Gira.Application, [env: Mix.env]}
     ]
   end
-
-  #defp applications(:test), do: applications(:default) ++ [:cowboy, :plug]
-  defp applications(_),     do: [:httpoison]
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
@@ -28,6 +26,15 @@ defmodule Gira.MixProject do
       {:httpoison, "~> 1.6"},
       {:poison, "~> 4.0"},
       {:jason, "~> 1.1"},
+    ]
+  end
+
+  defp package do
+    [
+      files: ["lib", "mix.exs", "README", "LICENSE*"],
+      maintainers: ["Jaime Gomes"],
+      licenses: ["Apache 2.0"],
+      links: %{"GitHub" => "https://github.com/fargozhu/gira"}
     ]
   end
 end
