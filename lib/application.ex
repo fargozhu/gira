@@ -5,7 +5,6 @@ defmodule Gira.Application do
 
   use Application
 
-
   def start(_type, _args) do
     children = [
       # Starts a worker by calling: Gira.Worker.start_link(arg)

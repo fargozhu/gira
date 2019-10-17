@@ -9,15 +9,15 @@ defmodule Gira.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: description(),
-      package: package(),
+      package: package()
     ]
   end
 
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
-      #mod: {Gira.Application, [env: Mix.env]}
+      extra_applications: [:logger]
+      # mod: {Gira.Application, [env: Mix.env]}
     ]
   end
 
@@ -27,7 +27,7 @@ defmodule Gira.MixProject do
       {:httpoison, "~> 1.6"},
       {:poison, "~> 4.0"},
       {:jason, "~> 1.1"},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
