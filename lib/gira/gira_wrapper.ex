@@ -16,20 +16,32 @@ defmodule Gira.GiraWrapper do
   end
 
   @doc """
-  Called before returning response body back the caller and when returned status is 200
+  Called before returning response body back the caller.
 
   ## Parameters
       - %HTTPoison.Response: HTTPoison response type
   """
   def process_response(%HTTPoison.Response{status_code: status_code, body: body})
-      when status_code in [200, 201] do
+      when status_code in [200, 201, 500] do
     body
     |> parse_body
     |> handle_response
   end
 
+    @doc """
+  Called before returning response back the caller.
+
+  ## Parameters
+      - %HTTPoison.Response: HTTPoison response type
+  """
+  def process_response(%HTTPoison.Response{status_code: status_code})
+      when status_code in [204] do
+      handle_response({ :ok, nil })
+  end
+
+
   @doc """
-  Called before returning response body back the caller
+  Called before returning response body back the caller.
 
   ## Parameters
       - %HTTPoison.Error
