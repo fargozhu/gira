@@ -47,19 +47,18 @@ defmodule GiraTest do
     assert Enum.map(response.payload["issues"], & &1["id"]) > 0
   end
 
-  @tag :skip
-  test "it returns { :ok, { status: 200, payload: %{} }} when closing a Jira issue" do
+  test "returns { :ok, { status: 200, payload: %{} }} when closing a Jira issue" do
     {:ok, client} = Gira.new(@base_url, @authorization_token)
-    {:ok, response} = Gira.close_issue(client, @id)
+    {:ok, response} = Gira.close_issue(client, %{jira_id: "CAP-862", transition_id: "31"})
 
     assert response.status == 200
-    assert response.payload != nil
+    assert response.payload == nil
   end
 
   @tag :skip
   test "it returns { :ok, { status: 200, payload: %{} }} when adding a comment to an existent Jira issue" do
     {:ok, client} = GiraClient.new(@base_url, @authorization_token)
-    {:ok, response} = Gira.add_comment_to_issue(client, @id, @comment)
+    {:ok, response} = Gira.add_comment_to_issue(client, %{jira_id: "CAP-862", comment: "adding a new comment"})
 
     assert response.status == 200
     assert response.payload != nil

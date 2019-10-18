@@ -47,7 +47,7 @@ defmodule Gira do
     - Gira.get_issue_basic_info_by_query(client, "labels%3DGithub-1210")
     { :ok, %{ status: 200, payload: % {} }}
   """
-  @spec get_issue_basic_info_by_query(%{}, String.t()) :: {atom(), %{}}
+  @spec get_issue_basic_info_by_query(%{}, String.t()) :: {atom(), %{ status: number, payload: %{}}}
   def get_issue_basic_info_by_query(client, filter) do
     Gira.GiraWrapper.get(
       get_base_url(client) <> "/search" <> "?jql=" <> filter <> "&fields=total",
@@ -58,13 +58,25 @@ defmodule Gira do
   @doc """
 
   """
-  @spec create_issue_with_basic_info(%{}, %{}) :: {atom(), %{}}
+  @spec create_issue_with_basic_info(%{}, %{}) :: {atom(), %{ status: number, payload: %{}}}
   def create_issue_with_basic_info(client, payload) do
     Gira.GiraWrapper.post(
       get_base_url(client) <> "/issue",
       payload,
       [{"Authorization", get_authorization_token(client)}, {"Content-type", "application/json"}]
     )
+  end
+
+  @doc """
+  
+  """
+  @spec close_issue(String.t(), %{ jira_id: String.t(), transition_id: String.t() }) :: {atom(), %{ status: number, payload: %{}}}
+  def close_issue(client, %{jira_id: jira_id, transition_id: trans_id}) do
+    Gira.GiraWrapper.post(
+      get_base_url(client) <> "/issue/" <> jira_id <> "/transitions",
+      %{ transition: trans_id },
+      [{"Authorization", get_authorization_token(client)}, {"Content-type", "application/json"}]
+    )  
   end
 
   defp get_base_url(client), do: client.base_url
