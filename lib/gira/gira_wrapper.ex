@@ -1,8 +1,9 @@
 defmodule Gira.GiraWrapper do
   @moduledoc """
-  This module provides a Jira client wrapper by leveraging on HTTPoison.Base 
+  This module provides a Jira client wrapper by leveraging on HTTPoison.Base
   """
   use HTTPoison.Base
+  require Logger
 
   @endpoint ""
 
@@ -23,6 +24,7 @@ defmodule Gira.GiraWrapper do
   """
   def process_response(%HTTPoison.Response{status_code: status_code, body: body})
       when status_code in [200, 201, 500] do
+    Logger.debug("processing a #{status_code} response from jira")
     body
     |> parse_body
     |> handle_response
@@ -36,6 +38,7 @@ defmodule Gira.GiraWrapper do
   """
   def process_response(%HTTPoison.Response{status_code: status_code})
       when status_code in [204] do
+      Logger.debug("processing a #{status_code} response from jira")
       handle_response({ :ok, nil })
   end
 
@@ -46,7 +49,15 @@ defmodule Gira.GiraWrapper do
   ## Parameters
       - %HTTPoison.Error
   """
-  def process_response(%HTTPoison.Error{reason: {_, reason}}), do: {:error, reason}
+  def process_response(%HTTPoison.Error{reason: {_, reason}}) do
+    Logger.debug("processing a error response from jira with reason #{reason}")
+    {:error, reason}
+  end
+
+  def process_response(unknown) do
+    Logger.debug("processing a unknown response from jira #{unknown}")
+    {:error, unknown}
+  end
 
   defp parse_body(body) do
     case Jason.decode(body) do

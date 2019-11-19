@@ -4,7 +4,7 @@ defmodule Gira.MixProject do
   def project do
     [
       app: :gira,
-      version: "0.3.0",
+      version: "0.4.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -24,7 +24,7 @@ defmodule Gira.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:httpoison, "~> 1.6"},
+      {:httpoison, "~> 1.5"},
       {:poison, "~> 4.0"},
       {:jason, "~> 1.1"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
@@ -40,7 +40,7 @@ defmodule Gira.MixProject do
       files: ["lib", "mix.exs", "README.md", "LICENSE*", ".formatter.exs"],
       maintainers: ["Jaime Gomes"],
       licenses: ["Apache 2.0"],
-      links: %{"GitHub" => "https://github.com/fargozhu/gira"}
+      links: %{"GitHub" => "https://github.com/calipo/gira"}
     ]
   end
 end
