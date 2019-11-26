@@ -31,7 +31,7 @@ defmodule GiraTest do
       }
     }
 
-    {:ok, client} = Gira.new(@base_url, @authorization_token)
+    client = Gira.new(@base_url, @authorization_token)
     {:ok, response} = Gira.create_issue_with_basic_info(client, request_body)
 
     assert response.status == 200
@@ -39,7 +39,7 @@ defmodule GiraTest do
   end
 
   test "returns issue basic info as { :ok, { status: 200, payload: [%{}] }} when searching for an existent issue" do
-    {:ok, client} = Gira.new(@base_url, @authorization_token)
+    client = Gira.new(@base_url, @authorization_token)
     {:ok, response} = Gira.get_issue_basic_info_by_query(client, "labels%3DGithub-1210")
 
     assert response.status == 200
@@ -48,7 +48,7 @@ defmodule GiraTest do
   end
 
   test "returns { :ok, { status: 200, payload: %{} }} when closing a Jira issue" do
-    {:ok, client} = Gira.new(@base_url, @authorization_token)
+    client = Gira.new(@base_url, @authorization_token)
     {:ok, response} = Gira.close_issue(client, %{jira_id: "CAP-862", transition_id: "31"})
 
     assert response.status == 200
@@ -57,8 +57,10 @@ defmodule GiraTest do
 
   @tag :skip
   test "it returns { :ok, { status: 200, payload: %{} }} when adding a comment to an existent Jira issue" do
-    {:ok, client} = GiraClient.new(@base_url, @authorization_token)
-    {:ok, response} = Gira.add_comment_to_issue(client, %{jira_id: "CAP-862", comment: "adding a new comment"})
+    client = GiraClient.new(@base_url, @authorization_token)
+
+    {:ok, response} =
+      Gira.add_comment_to_issue(client, %{jira_id: "CAP-862", comment: "adding a new comment"})
 
     assert response.status == 200
     assert response.payload != nil

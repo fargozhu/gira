@@ -25,12 +25,13 @@ defmodule Gira.GiraWrapper do
   def process_response(%HTTPoison.Response{status_code: status_code, body: body})
       when status_code in [200, 201, 500] do
     Logger.debug("processing a #{status_code} response from jira")
+
     body
     |> parse_body
     |> handle_response
   end
 
-    @doc """
+  @doc """
   Called before returning response back the caller.
 
   ## Parameters
@@ -38,10 +39,9 @@ defmodule Gira.GiraWrapper do
   """
   def process_response(%HTTPoison.Response{status_code: status_code})
       when status_code in [204] do
-      Logger.debug("processing a #{status_code} response from jira")
-      handle_response({ :ok, nil })
+    Logger.debug("processing a #{status_code} response from jira")
+    handle_response({:ok, nil})
   end
-
 
   @doc """
   Called before returning response body back the caller.
@@ -51,12 +51,12 @@ defmodule Gira.GiraWrapper do
   """
   def process_response(%HTTPoison.Error{reason: {_, reason}}) do
     Logger.debug("processing a error response from jira with reason #{reason}")
-    {:error, reason}
+    handle_response({:error, reason})
   end
 
-  def process_response(unknown) do
-    Logger.debug("processing a unknown response from jira #{unknown}")
-    {:error, unknown}
+  def process_response(_) do
+    Logger.debug("processing a unknown response from jira")
+    handle_response({:error, "unknown"})
   end
 
   defp parse_body(body) do

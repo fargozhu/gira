@@ -17,11 +17,11 @@ defmodule Gira do
   initialization of Gira by setting the necessary properties to a successful connection.
 
   ## Parameters
-    
+
     - base_url: Jira server url to connect
     - auth_token: authorization token to be set at the HTTP header
 
-     
+
   ## Examples
 
     iex> Gira.new("https://myserver.jira.com/rest/api/2", "Basic ajUHHJ9898hdhdsdsd434jh==")
@@ -29,11 +29,10 @@ defmodule Gira do
   """
   @spec new(String.t(), String.t()) :: {atom(), %Gira{}}
   def new(base_url, auth_token) do
-    {:ok,
-     %Gira{
-       base_url: base_url,
-       authorization_token: auth_token
-     }}
+    %Gira{
+      base_url: base_url,
+      authorization_token: auth_token
+    }
   end
 
   @doc """
@@ -47,7 +46,8 @@ defmodule Gira do
     - Gira.get_issue_basic_info_by_query(client, "labels%3DGithub-1210")
     { :ok, %{ status: 200, payload: % {} }}
   """
-  @spec get_issue_basic_info_by_query(%{}, String.t()) :: {atom(), %{ status: number, payload: %{}}}
+  @spec get_issue_basic_info_by_query(%{}, String.t()) ::
+          {atom(), %{status: number, payload: %{}}}
   def get_issue_basic_info_by_query(client, filter) do
     Gira.GiraWrapper.get(
       get_base_url(client) <> "/search" <> "?jql=" <> filter <> "&fields=total",
@@ -58,7 +58,7 @@ defmodule Gira do
   @doc """
 
   """
-  @spec create_issue_with_basic_info(%{}, %{}) :: {atom(), %{ status: number, payload: %{}}}
+  @spec create_issue_with_basic_info(%{}, %{}) :: {atom(), %{status: number, payload: %{}}}
   def create_issue_with_basic_info(client, payload) do
     Gira.GiraWrapper.post(
       get_base_url(client) <> "/issue",
@@ -68,15 +68,16 @@ defmodule Gira do
   end
 
   @doc """
-  
+
   """
-  @spec close_issue(String.t(), %{ jira_id: String.t(), transition_id: String.t() }) :: {atom(), %{ status: number, payload: %{}}}
+  @spec close_issue(String.t(), %{jira_id: String.t(), transition_id: String.t()}) ::
+          {atom(), %{status: number, payload: %{}}}
   def close_issue(client, %{jira_id: jira_id, transition_id: trans_id}) do
     Gira.GiraWrapper.post(
       get_base_url(client) <> "/issue/" <> jira_id <> "/transitions",
-      %{ transition: trans_id },
+      %{transition: trans_id},
       [{"Authorization", get_authorization_token(client)}, {"Content-type", "application/json"}]
-    )  
+    )
   end
 
   defp get_base_url(client), do: client.base_url
