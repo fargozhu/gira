@@ -6,7 +6,7 @@ defmodule GiraTest do
   # add Jira authorization token here
   @authorization_token System.get_env("JIRA_AUTH_TOKEN")
 
-  test "returns { :ok, { status: 200, payload: %{} }} when creating a Jira issue" do
+  test "returns { :ok, response: { status: 200, payload: %{} }} when creating a Jira issue" do
     request_body = %{
       fields: %{
         project: %{
@@ -32,7 +32,8 @@ defmodule GiraTest do
     }
 
     client = Gira.new(@base_url, @authorization_token)
-    {:ok, response} = Gira.create_issue_with_basic_info(client, request_body)
+    {:ok , response} = Gira.create_issue_with_basic_info(client, request_body)
+    IO.inspect response
 
     assert response.status == 200
     assert response.payload != nil
@@ -49,7 +50,9 @@ defmodule GiraTest do
 
   test "returns { :ok, { status: 200, payload: %{} }} when closing a Jira issue" do
     client = Gira.new(@base_url, @authorization_token)
-    {:ok, response} = Gira.close_issue(client, %{jira_id: "CAP-862", transition_id: "31"})
+    {:ok, response} = Gira.close_issue(client, %{jira_id: "CAP-1108", transition_id: "31"})
+
+    IO.inspect response
 
     assert response.status == 200
     assert response.payload == nil

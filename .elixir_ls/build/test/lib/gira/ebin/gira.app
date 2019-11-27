@@ -5,4 +5,4 @@
               {modules,['Elixir.Gira','Elixir.Gira.Application',
                         'Elixir.Gira.GiraWrapper']},
               {registered,[]},
-              {vsn,"0.5.3"}]}.
+              {vsn,"0.5.5"}]}.

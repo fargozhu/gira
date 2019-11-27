@@ -7,7 +7,7 @@ defmodule Gira.GiraWrapperTest do
   @auth_token System.get_env("JIRA_AUTH_TOKEN")
   @headers [{"Authorization", @auth_token}, {"Content-type", "application/json"}]
 
-  test "it returns issue basic info as { :ok, { status: 200, payload: [%{}] }} when searching for an existent issue" do
+  test "it returns issue basic info as { :ok, response: { status: 200, payload: [%{}] }} when searching for an existent issue" do
     {:ok, response} =
       Gira.GiraWrapper.get(@base_url <> "/search?jql=labels%3DGithub-1210&fields=total", @headers)
 
