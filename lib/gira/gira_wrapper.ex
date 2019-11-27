@@ -61,8 +61,8 @@ defmodule Gira.GiraWrapper do
 
   defp parse_body(body) do
     case Jason.decode(body) do
-      {:ok, decoded} -> {:ok, decoded}
-      {:error, error} -> {:error, error}
+      {:ok, decoded} -> {:ok, response: decoded}
+      {:error, error} -> {:error, response: error}
     end
   end
 
@@ -70,11 +70,11 @@ defmodule Gira.GiraWrapper do
     %{status: 500, payload: error}
   end
 
-  defp handle_response({:ok, %{"total" => 0}}) do
+  defp handle_response({:ok, response: %{"total" => 0}}) do
     %{status: 404, payload: nil}
   end
 
-  defp handle_response({:ok, body}) do
-    %{status: 200, payload: body}
+  defp handle_response({:ok, response: body}) do
+    %{status: 200, response: body}
   end
 end
