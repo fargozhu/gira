@@ -49,7 +49,7 @@ defmodule Gira.GiraWrapper do
   ## Parameters
       - %HTTPoison.Error
   """
-  def process_response(%HTTPoison.Error{reason: {_, reason}}) do
+  def process_response(%HTTPoison.Error{reason: reason}) do
     Logger.debug("processing a error response from jira with reason #{reason}")
     handle_response({:error, reason})
   end
